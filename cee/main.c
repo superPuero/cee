@@ -20,19 +20,19 @@ void poll_event(env *env)
 	env->exit = window_should_close(&env->win);
 }
 
-f64 pred[10] = {0};
-f64 loss[10] = {0};
-
-vec3_f32 pred_color[10] = {0};
-
-
-uz total_steps = 80000;
-uz curr_step = 0;
-
-bool8 learn = false;
 
 void update(env *env)
 {
+	static f64 pred[10] = {0};
+	static f64 loss[10] = {0};
+	
+	static vec3_f32 pred_color[10] = {0};
+	
+	static uz total_steps = 80000;
+	static uz curr_step = 0;
+	
+	static bool8 learn = false;
+	
 	tick_info_update(&env->tick_info);
 
 	ui_refresh(
