@@ -189,13 +189,22 @@ void nn_main(int argc, char **argv)
 {
 	env env = env_make(argc, argv); 
 	
-	if(env.exit)
+	// if(env.exit)
+	// {
+		// return;
+	// }
+
+	// if(env.)
+
+	if(env.command_line_args.preload)
 	{
-		return;
+		env.nn = cee_nn_load_from_file(env.st_arena, env.pf_arena, strv_from_cstr("model.bin"));
 	}
 
-	env.nn.learning_rate = env.command_line_args.lr;
-
+	if(env.command_line_args.lr_provided)
+	{
+		env.nn.learning_rate = env.command_line_args.lr;
+	}
 	for(uz i = 0; i < 10; i++)
 	{			
 		for(uz j = 0; j < 200; j++)
