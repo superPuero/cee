@@ -8,7 +8,7 @@ Before building `cee`, ensure you have the following installed on your system:
 * `make`
 * `VULKAN_SDK` for visualisation 
 
-## build
+# build
 
 ```bash
 git clone https://github.com/superPuero/cee
