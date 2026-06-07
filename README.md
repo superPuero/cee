@@ -15,3 +15,11 @@ git clone https://github.com/superPuero/cee
 cd cee
 make cee/cee.mk release
 ```
+
+# usage
+
+```bash
+cee -h (help)
+cee -preload (load model.bin upfront) 
+cee -lr 0.01 (specify learning rate)
+```
