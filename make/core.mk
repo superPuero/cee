@@ -16,7 +16,7 @@ ifndef VULKAN_SDK
 	$(error VULKAN_SDK is not detected)
 endif
 
-CC = clang
+CC = gcc
 
 BUILD_DIR = build
 

@@ -2,7 +2,7 @@
 
 #include <jahoda/base/image.h>
 
-tensor_f64 kernelize(arena *mem, const tensor_f64 *input, uz kernel_size)
+tensor_f64 kernelize(arena mem, const tensor_f64 *input, uz kernel_size)
 {
     uz B = input->shape[0];
     uz C = input->shape[1];
@@ -52,7 +52,7 @@ tensor_f64 kernelize(arena *mem, const tensor_f64 *input, uz kernel_size)
     return out;
 }
 
-tensor_f64 load_image_to_tensor(arena *static_memory, arena *temp_memory, strv path)
+tensor_f64 load_image_to_tensor(arena static_memory, arena temp_memory, strv path)
 {
     marker m = arena_mark(temp_memory);
 
@@ -86,7 +86,7 @@ tensor_f64 load_image_to_tensor(arena *static_memory, arena *temp_memory, strv p
 }
 
 // @think: uz original_rows, uz original_colsa can be inferred from column-matrix now, but not in fututre, maybe there is a better way to pass that data round
-tensor_f64 dekernelize(arena *mem, const tensor_f64 *columns, uz orig_H, uz orig_W, uz kernel_size)
+tensor_f64 dekernelize(arena mem, const tensor_f64 *columns, uz orig_H, uz orig_W, uz kernel_size)
 {
     uz B = columns->shape[0];
     uz flattened_channels = columns->shape[1];
@@ -133,7 +133,7 @@ tensor_f64 dekernelize(arena *mem, const tensor_f64 *columns, uz orig_H, uz orig
     return dX;
 }
 
-pool_result max_pool_2x2(arena *mem, const tensor_f64 *input)
+pool_result max_pool_2x2(arena mem, const tensor_f64 *input)
 {
     uz B = input->shape[0];
     uz C = input->shape[1];
@@ -188,7 +188,7 @@ pool_result max_pool_2x2(arena *mem, const tensor_f64 *input)
     return result;
 }
 // 
-tensor_f64 max_pool_backward(arena *mem, const tensor_f64 *dA_pooled, const tensor_f64 *argmax_indices, uz orig_H, uz orig_W)
+tensor_f64 max_pool_backward(arena mem, const tensor_f64 *dA_pooled, const tensor_f64 *argmax_indices, uz orig_H, uz orig_W)
 {
     uz B = dA_pooled->shape[0];
     uz C = dA_pooled->shape[1];
@@ -226,7 +226,7 @@ tensor_f64 max_pool_backward(arena *mem, const tensor_f64 *dA_pooled, const tens
 
     return dX;
 }
-cee_nn cee_nn_make(arena *mem, f64 learning_rate)
+cee_nn cee_nn_make(arena mem, f64 learning_rate)
 {
     return (cee_nn){
         .learning_rate = learning_rate,
@@ -236,7 +236,7 @@ cee_nn cee_nn_make(arena *mem, f64 learning_rate)
         .out_weights = tensor_f64_make_rand(.mem = mem, .rank = 2, .shape = {128, 10}, .from = -0.1, .to = 0.1)
     };
 }
-void cee_nn_train_with(cee_nn *nn, arena *temp_mem, tensor_f64 *img, uz label)
+void cee_nn_train_with(cee_nn *nn, arena temp_mem, tensor_f64 *img, uz label)
 {
     uz B = img->shape[0]; 
 
@@ -334,7 +334,7 @@ void cee_nn_train_with(cee_nn *nn, arena *temp_mem, tensor_f64 *img, uz label)
     tensor_f64_add_scaled_inplace(&nn->conv1_weights, &dW_conv1_2, -nn->learning_rate); 
 }
 
-tensor_f64 cee_nn_predict(cee_nn *nn, arena *temp_mem, tensor_f64 *img)
+tensor_f64 cee_nn_predict(cee_nn *nn, arena temp_mem, tensor_f64 *img)
 {
     uz B = img->shape[0]; 
 
@@ -373,7 +373,7 @@ tensor_f64 cee_nn_predict(cee_nn *nn, arena *temp_mem, tensor_f64 *img)
     return final_predictions;
 }
 
-// void cee_nn_train_with(cee_nn *nn, arena *temp_mem, mat_f64 *img, uz label)
+// void cee_nn_train_with(cee_nn *nn, arena temp_mem, mat_f64 *img, uz label)
 // {
 // 	mat_f64 target_vector = mat_f64_make(temp_mem, 1, 10, true); 
 
@@ -525,7 +525,7 @@ tensor_f64 cee_nn_predict(cee_nn *nn, arena *temp_mem, tensor_f64 *img)
 //     mat_f64_add_scaled_inplace(&nn->conv1_weights, &dW_conv1, -nn->learning_rate);   
 // }
 
-// mat_f64 cee_nn_predict(cee_nn *nn, arena *temp_mem, mat_f64 *img)
+// mat_f64 cee_nn_predict(cee_nn *nn, arena temp_mem, mat_f64 *img)
 // {
 //     mat_f64 img_columns = kernelize(temp_mem, img, 3);
 
@@ -576,7 +576,7 @@ tensor_f64 cee_nn_predict(cee_nn *nn, arena *temp_mem, tensor_f64 *img)
 //     return final_predictions;
 // }
 
-void cee_nn_dump_to_file(cee_nn *nn,arena *temp_mem, strv path)
+void cee_nn_dump_to_file(cee_nn *nn,arena temp_mem, strv path)
 {
     str path_nt = str_from_view_nt(temp_mem, path); 
 
@@ -591,7 +591,7 @@ void cee_nn_dump_to_file(cee_nn *nn,arena *temp_mem, strv path)
     tensor_f64_dump_to_file(&nn->out_weights, file);
 }
 
-cee_nn cee_nn_load_from_file(arena *mem, arena *temp_mem, strv path)
+cee_nn cee_nn_load_from_file(arena mem, arena temp_mem, strv path)
 {
     cee_nn nn = {0};
 
