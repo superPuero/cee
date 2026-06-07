@@ -5,7 +5,7 @@
 Before building `cee`, ensure you have the following installed on your system:
 
 * `clang` or `gcc` compiler
-* `make` (if using a Makefile)
+* `make`
 * `VULKAN_SDK` for visualisation 
 
 ## build
