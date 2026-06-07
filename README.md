@@ -16,10 +16,10 @@ cd cee
 make cee/cee.mk release
 ```
 
-# usage
+# usage flags
 
 ```bash
-cee -h (help)
-cee -preload (load model.bin upfront) 
-cee -lr 0.01 (specify learning rate)
+-h (help)
+-preload (load model.bin upfront) 
+-lr 0.01 (specify learning rate)
 ```
