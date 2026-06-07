@@ -13,7 +13,7 @@ Before building `cee` ensure you have the following installed on your system:
 ```bash
 git clone https://github.com/superPuero/cee
 cd cee
-make cee/cee.mk release
+make -f cee/cee.mk release
 ```
 
 # usage flags
