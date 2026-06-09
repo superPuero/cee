@@ -189,6 +189,9 @@ void nn_main(int argc, char **argv)
 {
 	env env = env_make(argc, argv); 
 	
+	dbg_verify(1 > 4, "hello foo");
+
+	
 	// if(env.exit)
 	// {
 		// return;
