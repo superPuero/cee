@@ -189,16 +189,6 @@ void nn_main(int argc, char **argv)
 {
 	env env = env_make(argc, argv); 
 	
-	dbg_verify(1 > 4, "hello foo");
-
-	
-	// if(env.exit)
-	// {
-		// return;
-	// }
-
-	// if(env.)
-
 	if(env.command_line_args.preload)
 	{
 		env.nn = cee_nn_load_from_file(env.st_arena, env.pf_arena, strv_from_cstr("model.bin"));
