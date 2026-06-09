@@ -213,8 +213,7 @@ tensor_f64 max_pool_backward(arena mem, const tensor_f64 *dA_pooled, const tenso
                     f64 grad = *tensor_at(dA_pooled, b, c, py, px);
                     
                     uz flat_spatial_idx = (uz)(*tensor_at(argmax_indices, b, c, py, px));
-                    
-                    // Now safely decodes using the exact width from the forward pass
+                                  
                     uz in_y = flat_spatial_idx / orig_W;
                     uz in_x = flat_spatial_idx % orig_W;
                     

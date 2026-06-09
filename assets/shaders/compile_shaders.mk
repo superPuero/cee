@@ -1,4 +1,4 @@
-SHADER_SRCS = $(wildcard *.vert) $(wildcard *.frag)
+SHADER_SRCS = $(wildcard assets/shaders/*.vert) $(wildcard assets/shaders/*.frag)
 SHADER_SPVS = $(SHADER_SRCS:%=%.spv)
 
 compile_shaders: $(SHADER_SPVS)
