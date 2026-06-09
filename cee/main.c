@@ -224,10 +224,10 @@ void nn_main(int argc, char **argv)
 		poll_event(&env);
 		update(&env);
 
-		if (!window_is_minimized(&env.win)) { try_render(&env); }
+		// if (!window_is_minimized(&env.win)) { try_render(&env); }
 
-		// if(window_is_minimized(&env.win)) { glfwWaitEvents(); }
-		// else { try_render(&env); }
+		if(window_is_minimized(&env.win)) { glfwWaitEvents(); }
+		else { try_render(&env); }
 
 		env.pf_arena_last_frame_usage = arena_current(env.pf_arena)/ 1000.f;
 

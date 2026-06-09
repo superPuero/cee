@@ -62,7 +62,7 @@ do\
 #define infol(label, ...)\
 do\
 {\
-	print_colored_if_isatty(ansi_text_color_green, #label ": ");\
+	print_colored_if_isatty(ansi_text_color_green, #label " [" __DATE__ " " __TIME__ "]" ": ");\
 	fprintf(stdout, "" __VA_ARGS__);\
 	fprintf(stdout, "\n");\
 }while(0)
@@ -72,11 +72,12 @@ do\
 #define info(...)
 #endif
 
+#define print_time() fprintf(stdout, "%s %s", __DATE__, __TIME__);
 
 #define warnl(label, ...)\
 do\
 {\
-	print_colored_if_isatty(ansi_text_color_yellow, #label ": ");\
+	print_colored_if_isatty(ansi_text_color_yellow, #label " [" __DATE__ " " __TIME__ "]" ": ");\
 	fprintf(stdout, "" __VA_ARGS__);\
 	fprintf(stdout, "\n");\
 }while(0)
@@ -86,7 +87,7 @@ do\
 #define errl(label, ...)\
 do\
 {\
-	print_colored_if_isatty(ansi_text_color_red, #label ": ");\
+	print_colored_if_isatty(ansi_text_color_red, #label " [" __DATE__ " " __TIME__ "]" ": ");\
 	fprintf(stdout, "" __VA_ARGS__);\
 	fprintf(stdout, "\n");\
 	trap();\
