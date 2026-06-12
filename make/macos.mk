@@ -1,6 +1,8 @@
 LIB_DIRECTORIES += -L"$(VULKAN_SDK)/lib"
 LIB_FLAGS += -lvulkan -framework Cocoa -framework IOKit -framework CoreVideo
 
+CC_STD = -std=gnu99
+
 clear_all:
 	find . -type f -name '*.o' -delete
 	rm -f $(TARGET)

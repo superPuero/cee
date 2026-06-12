@@ -10,10 +10,10 @@ else
     endif
 endif
 
-$(building for platform: $(PLATFORM))
+$(info building for platform: $(PLATFORM))
 
 ifndef VULKAN_SDK
-	$(error VULKAN_SDK is not detected)
+    $(error VULKAN_SDK is not detected)
 endif
 
 CC = clang
@@ -26,7 +26,10 @@ INCLUDE_DIRECTORIES = -I"$(VULKAN_SDK)/include" -I"vendors/glfw/include" -I"vend
 LIB_DIRECTORIES =
 LIB_FLAGS =
 
-CC_FLAGS = -std=c99 -Wall -Wextra $(INCLUDE_DIRECTORIES)
+
+CC_STD = -std=c99
+
+CC_FLAGS =-Wall -Wextra $(INCLUDE_DIRECTORIES)
 CC_RELEASE_FLAGS = -O3 -DNDEBUG
 CC_DEBUG_FLAGS = -O0 -g
 
@@ -37,8 +40,7 @@ include vendors/vendors.mk
 OBJS = $(SRCS:.c=.o)
 
 basic_build: $(OBJS)
-	$(CC) $(OBJS) $(CC_FLAGS) -o $(TARGET) $(LIB_DIRECTORIES) $(LIB_FLAGS)
+	$(CC) $(OBJS) $(CC_STD) $(CC_FLAGS) -o $(TARGET) $(LIB_DIRECTORIES) $(LIB_FLAGS)
 
 %.o: %.c
-	$(CC) $(CC_FLAGS) -c $< -o $@
-
+	$(CC) $(CC_STD) $(CC_FLAGS) -c $< -o $@

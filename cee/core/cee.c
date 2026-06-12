@@ -54,7 +54,7 @@ tensor_f64 kernelize(arena mem, const tensor_f64 *input, uz kernel_size)
 
 tensor_f64 load_image_to_tensor(arena static_memory, arena temp_memory, strv path)
 {
-    marker m = arena_mark(temp_memory);
+    scratch m = scratch_begin(temp_memory);
 
     image img = image_load(temp_memory, static_memory, path);
 
@@ -80,7 +80,7 @@ tensor_f64 load_image_to_tensor(arena static_memory, arena temp_memory, strv pat
     }
 
     image_release(&img);
-    arena_pop_to_marker(m);
+    scratch_end(m);
 
     return out;
 }
@@ -339,7 +339,6 @@ tensor_f64 cee_nn_predict(cee_nn *nn, arena temp_mem, tensor_f64 *img)
 
     tensor_f64 layer1_cols = kernelize(temp_mem, img, 3);
     tensor_f64 conv1_out_3d = tensor_f64_mm(temp_mem, &nn->conv1_weights, &layer1_cols);
-    
 
 
     tensor_f64 conv1_out_4d = tensor_f64_make_view(
@@ -367,7 +366,6 @@ tensor_f64 cee_nn_predict(cee_nn *nn, arena temp_mem, tensor_f64 *img)
     tensor_f64_relu_inplace(&dense1_out);
 
     tensor_f64 final_predictions = tensor_f64_mm(temp_mem, &dense1_out, &nn->out_weights);
-    tensor_f64_softmax_inplace(&final_predictions);
 
     return final_predictions;
 }

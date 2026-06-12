@@ -12,6 +12,10 @@
 #define jahoda_debug
 #endif
 
+#define each_index(index_var_name, count)\
+(uz index_var_name = 0; index_var_name < count; index_var_name++)
+
+
 #define static_assert(expr) typedef int static_assert_##__COUNTER__[(expr) ? 1 : -1]
 
 #define arrsize(arr) (sizeof(arr)/sizeof(arr[0]))
@@ -80,7 +84,7 @@ do\
 	fprintf(stdout, "\n");\
 }while(0)
 
-#define warn(...) warnl(warn, __VA_ARGS__);
+#define warn(...) warnl(-, "" __VA_ARGS__);
 
 #define errl(label, ...)\
 do\
@@ -91,7 +95,7 @@ do\
 	trap();\
 }while(0)
 
-#define err(...) errl(err, __VA_ARGS__)
+#define err(...) errl(-, "" __VA_ARGS__)
 
 #define verifyl(label, expr, ...)\
 do\
@@ -102,13 +106,13 @@ do\
 	}\
 }while(0)
 
-#define verify(expr, ...) verifyl(verify, expr, __VA_ARGS__)
+#define verify(expr, ...) verifyl(-, expr, __VA_ARGS__)
 
 #ifdef jahoda_debug
 #define dbg(...) __VA_ARGS__
 #define dbg_verifyl(label, expr, ...) dbg(verifyl(label, expr, __VA_ARGS__))
 
-#define dbg_verify(expr, ...) dbg_verifyl(dbg_verify, expr, __VA_ARGS__)
+#define dbg_verify(expr, ...) dbg_verifyl(-, expr, __VA_ARGS__)
 
 #else 
 #define dbg(...)

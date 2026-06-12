@@ -47,11 +47,12 @@ void update(env *env)
 	{
 		if(curr_step < total_steps)
 		{
-			marker m = arena_mark(env->pf_arena);
+			scratch m = scratch_begin(env->pf_arena);
 			uz random_class = rand() % 10;
-			uz random_sample = rand() % 200;
+			// 160 is 80% of 200
+			uz random_sample = rand() % 160;
 			cee_nn_train_with(&env->nn, env->pf_arena, &env->dataset[random_class][random_sample], random_class);
-			arena_pop_to_marker(m);
+			scratch_end(m);
 			curr_step++;
 		}
 	}
@@ -77,21 +78,23 @@ void update(env *env)
 	{
 		for(uz i = 0; i < 10; i++)
 		{
-			uz sample_index = rand() % 200;
+			uz sample_index = 160  + rand() % 40;
 
-			marker m = arena_mark(env->pf_arena);
+			scratch m = scratch_begin(env->pf_arena);
 			
 			tensor_f64 curr_pred = cee_nn_predict(&env->nn, env->pf_arena, env->dataset[i] + sample_index);
 
-			loss[i] = *tensor_at(&curr_pred, 0, i);
+			loss[i] = *tensor_at(&curr_pred, 0, i);			
+
+			tensor_f64_softmax_inplace(&curr_pred);
 
 			f64 curr_pred_val = *tensor_at(&curr_pred, 0, i);
-	
-			pred_color[i] = (pred[i] > curr_pred_val) ? (vec3_f32){1,0.7,0.7} : (vec3_f32){0.7,1,0.7},
+			
+			pred_color[i] = (pred[i] > curr_pred_val) ? (vec3_f32){1,0.7,0.7} : (vec3_f32){0.7,1,0.7};
 			
 			pred[i] = curr_pred_val;
 			
-			arena_pop_to_marker(m);
+			scratch_end(m);
 		}	
 	}
 
@@ -108,7 +111,7 @@ void update(env *env)
 			&env->ui,
 			pred_color[i],
 			(vec2_f64){50, 100 + 100 * i},
-			"%zu: %.2lf (%.2lf)", i, pred[i], loss[i] * 10
+			"%zu: %.2lf (%.2lf)", i, pred[i], loss[i]
 		);
 	}
 
@@ -187,30 +190,24 @@ void interrupt_handle(int sig)
 
 void nn_main(int argc, char **argv)
 {
+	
+
 	env env = env_make(argc, argv); 
 	
-	if(env.exit)
-	{
-		return;
-	}
+	if(env.exit) { return; }
 
-	if(env.command_line_args.preload)
-	{
-		env.nn = cee_nn_load_from_file(env.st_arena, env.pf_arena, strv_from_cstr("model.bin"));
-	}
+	if(env.command_line_args.preload) { env.nn = cee_nn_load_from_file(env.st_arena, env.pf_arena, strv_from_cstr("model.bin")); }
 
-	if(env.command_line_args.lr_provided)
-	{
-		env.nn.learning_rate = env.command_line_args.lr;
-	}
+	if(env.command_line_args.lr_provided) { env.nn.learning_rate = env.command_line_args.lr; }
+
 	for(uz i = 0; i < 10; i++)
 	{			
 		for(uz j = 0; j < 200; j++)
 		{
-			marker m = arena_mark(env.pf_arena);
+			scratch m = scratch_begin(env.pf_arena);
 			str path = str_from_fmt(env.pf_arena, "assets/digit_dataset2/%zu/digit_%zu_%zu.png", i, i, j);
 			env.dataset[i][j] = load_image_to_tensor(env.st_arena, env.pf_arena, strv_from_str(&path));
-			arena_pop_to_marker(m);
+			scratch_end(m);
 		}
 	}
 
@@ -222,10 +219,10 @@ void nn_main(int argc, char **argv)
 		poll_event(&env);
 		update(&env);
 
-		// if (!window_is_minimized(&env.win)) { try_render(&env); }
+		if (!window_is_minimized(&env.win)) { try_render(&env); }
 
-		if(window_is_minimized(&env.win)) { glfwWaitEvents(); }
-		else { try_render(&env); }
+		// if(window_is_minimized(&env.win)) { glfwWaitEvents(); }
+		// else { try_render(&env); }
 
 		env.pf_arena_last_frame_usage = arena_current(env.pf_arena)/ 1000.f;
 
