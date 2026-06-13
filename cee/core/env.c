@@ -31,7 +31,7 @@ env env_make(int argc, char **argv)
 	out.win = window_make(
 		.width = out.command_line_args.ww,
 		.height = out.command_line_args.wh,
-		.title = strv_from_cstr("jahoda")
+		.title = strv_from_cstr(out.command_line_args.wn)
 	);
 
 	out.gpu = gpu_context_make(

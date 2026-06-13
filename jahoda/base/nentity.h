@@ -15,11 +15,11 @@
 // } name##_component_id;\
 // static_assert(component_index_end < (sizeof(component_mask) * 8));
 
-// #define component_id_of(c) component_##c
+// #define component_id(c) component_##c
 
 // typedef enum
 // {
-// 	#define X(c) component_id_of(c) = 1llu << component_##c##_index,
+// 	#define X(c) component_id(c) = 1llu << component_##c##_index,
 // 	component_list
 // 	#undef X
 // } component_;

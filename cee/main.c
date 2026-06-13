@@ -4,12 +4,16 @@
 #include <jahoda/core/time.h>
 #include <jahoda/core/tensor.h>
 
-
 void nn_main(int argc, char **argv);
 void galaxy_main(int argc, char **argv);
 
 int main(int argc, char **argv)
-{			
+{
+    return 0;
+}
+
+int main2(int argc, char **argv)
+{		
 	nn_main(argc, argv);
     return 0;
 }
@@ -19,7 +23,6 @@ void poll_event(env *env)
 	window_poll_events(&env->win);
 	env->exit = window_should_close(&env->win);
 }
-
 
 void update(env *env)
 {
@@ -78,7 +81,7 @@ void update(env *env)
 	{
 		for(uz i = 0; i < 10; i++)
 		{
-			uz sample_index = 160  + rand() % 40;
+			uz sample_index = 160 + rand() % 40;
 
 			scratch m = scratch_begin(env->pf_arena);
 			
@@ -190,8 +193,6 @@ void interrupt_handle(int sig)
 
 void nn_main(int argc, char **argv)
 {
-	
-
 	env env = env_make(argc, argv); 
 	
 	if(env.exit) { return; }

@@ -63,7 +63,7 @@ typedef struct
 	ui_node_state state;
 } ui_node;
 
-// @explain: (1 << 12)  *ht_max_occupancy = 4096  *0.75 = 3072, this is hard limit for ammount of nodes
+// @explain: (1 << 12)  *ht_max_occupancy = 4096  *0.75 = 3072, this is hard limit for amount of nodes
 // s_ht_declare(jui_node, 12, jui_node_table);
 
 typedef struct

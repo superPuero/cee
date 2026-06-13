@@ -16,14 +16,6 @@
 
 typedef u8* arena;
 
-// typedef struct
-// {
-	// u8 *mem;
-	// uz current;
-	// uz capacity;
-	// char name[arena_name_max_len];
-// } arena;
-
 typedef struct
 {
 	arena arena;

@@ -38,7 +38,7 @@ str str_from_fmt(arena arena, const char *fmt, ...)
 
 // @todo: str str_from_vfmt(arena arena, const char *fmt, va_list args)
 
-str str_from_fmtnt(arena arena, const char *fmt, ...)
+str str_from_fmt_nt(arena arena, const char *fmt, ...)
 {
 	str out = {0};
 
@@ -111,6 +111,7 @@ void str_append_str(arena arena, str *to, str *what)
 void str_append_view(arena arena, str *str, strv view)
 {
 	// @memory: this might kill memory at some point
+	// @update: it wont, da can now expand inplace
 	for(uz i = 0; i < view.len; i++)
 	{
 		da_append(arena, str, view.data[i]);

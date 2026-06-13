@@ -12,9 +12,12 @@
 #define jahoda_debug
 #endif
 
-#define each_index(index_var_name, count)\
-(uz index_var_name = 0; index_var_name < count; index_var_name++)
+#define each_index_range(index_var_name, from, to)\
+(uz index_var_name = from; index_var_name < to; index_var_name++)
 
+#define each_index(index_var_name, count) each_index_range(index_var_name, 0, count)
+
+#define unique_symbol(...) __VA_ARGS__##__COUNTER__	
 
 #define static_assert(expr) typedef int static_assert_##__COUNTER__[(expr) ? 1 : -1]
 

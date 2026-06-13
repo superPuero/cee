@@ -4,7 +4,7 @@
 
 typedef struct
 {
-	char name[arena_name_max_len];
+	char name[arena_name_max_len + 1];
 	uz current;
 	uz capacity;
 	u8 mem[];
@@ -15,15 +15,14 @@ typedef struct
 arena arena_make_(arena_params params)
 {
 	arena_content* out = malloc(params.capacity + sizeof(arena_content));
-	infol(alloc, "(%.*s) %.2lf Kb", strv_fmt(&params.name),  params.capacity / 1024.0);
 	
+	verifyl(arena, params.name.len < arena_name_max_len);
+	memcpy(out->name, params.name.data, arena_name_max_len);
 	out->capacity = params.capacity;
 	out->current = 0;
 
-	verify(params.name.len < arena_name_max_len, "params.name.len < arena_name_max_len");
-
-    memcpy(out->name, params.name.data, arena_name_max_len);
-
+	infol(alloc, "(%s) %.2lf Kb", out->name,  params.capacity / 1024.0);
+	
 	return (arena)out;
 }
 
